@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import Parse
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,9 +17,43 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+      
+       
+       
+        
+        
+        let configuration = ParseClientConfiguration {
+            $0.applicationId = "P7lubV4JD01OVzMKCKkSeTEZ9od3QXm9bxYy0MUx"
+            $0.clientKey = "RjigcYGl01XKdkBOGD5sMdCcXdO6lidDfS0K4sgw"
+            $0.server = "https://parseapi.back4app.com"
+        }
+        Parse.initialize(with: configuration)
+        saveInstallationObject()
+        
         return true
     }
+    
+    
+    
+    func saveInstallationObject(){
+        if let installation = PFInstallation.current(){
+            installation.saveInBackground {
+                (success: Bool, error: Error?) in
+                if (success) {
+                    print("You have successfully connected your app to Back4App!")
+                } else {
+                    if let myError = error{
+                        print(myError.localizedDescription)
+                    }else{
+                        print("Uknown error")
+                    }
+                }
+            }
+        }
+    }
+    
+    
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
